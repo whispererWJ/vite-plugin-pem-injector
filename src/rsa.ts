@@ -1,33 +1,39 @@
 import crypto from 'crypto';
 import {
-  RsaConfig,
-  EnvVars
-} from './types';
-import {
   ensureDirectoryExists,
   readTextFile,
   writeTextFile,
   getEnvVarName,
   getFileName,
   resolvePath,
-  fileExists
+  fileExists,
 } from './utils';
+//  types
+import type { RsaConfig, EnvVars } from './types';
 
+/**
+ * 处理RSA密钥
+ * @param rsaConfigs RSA配置数组
+ * @param pemDirPath PEM目录路径
+ * @param isBuild 是否为构建模式
+ */
 export function processRsaKeys(
   rsaConfigs: RsaConfig[],
-  pemDirPath: string
+  pemDirPath: string,
+  isBuild: boolean = false
 ): EnvVars {
   const envVars: EnvVars = {};
   ensureDirectoryExists(pemDirPath);
 
-  rsaConfigs.forEach(config => {
+  rsaConfigs.forEach((config) => {
     const { name, options } = config;
     const {
       modulusLength = 2048,
       publicKeyEncodingType = 'spki',
       privateKeyEncodingType = 'pkcs8',
       privateKeyCipher,
-      privateKeyPassphrase
+      privateKeyPassphrase,
+      privateKeyHidden = isBuild, // build模式默认true，dev模式默认false
     } = options;
 
     const publicFilePath = resolvePath(pemDirPath, getFileName('rsa-public', name));
@@ -46,16 +52,18 @@ export function processRsaKeys(
           modulusLength,
           publicKeyEncoding: {
             type: publicKeyEncodingType as 'spki' | 'pkcs1',
-            format: 'pem'
+            format: 'pem',
           },
           privateKeyEncoding: {
             type: privateKeyEncodingType as 'pkcs8' | 'pkcs1' | 'sec1',
             format: 'pem',
-            ...(privateKeyCipher && privateKeyPassphrase ? {
-              cipher: privateKeyCipher,
-              passphrase: privateKeyPassphrase
-            } : {})
-          }
+            ...(privateKeyCipher && privateKeyPassphrase
+              ? {
+                  cipher: privateKeyCipher,
+                  passphrase: privateKeyPassphrase,
+                }
+              : {}),
+          },
         } as crypto.RSAKeyPairOptions<'pem', 'pem'>);
 
         publicKey = keyPair.publicKey;
@@ -69,8 +77,18 @@ export function processRsaKeys(
       }
     }
 
-    envVars[getEnvVarName('VITE_RSA_PUBLIC_KEY', name, '')] = publicKey;
-    envVars[getEnvVarName('VITE_RSA_PRIVATE_KEY', name, '')] = privateKey;
+    // 公钥始终注入到环境变量
+    const publicKeyEnvName = getEnvVarName('VITE_RSA_PUBLIC_KEY', name, '');
+    envVars[publicKeyEnvName] = publicKey;
+
+    // 根据 privateKeyHidden 决定是否注入私钥
+    if (!privateKeyHidden) {
+      const privateKeyEnvName = getEnvVarName('VITE_RSA_PRIVATE_KEY', name, '');
+      envVars[privateKeyEnvName] = privateKey;
+      console.log(`🔓 RSA private key for "${name}" is exposed (privateKeyHidden: false)`);
+    } else {
+      console.log(`🔒 RSA private key for "${name}" is hidden (privateKeyHidden: true)`);
+    }
   });
 
   return envVars;

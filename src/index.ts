@@ -2,35 +2,8 @@ import { Plugin } from 'vite';
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
-
-export interface AesOptions {
-  keySize?: number;
-  ivSize?: number;
-}
-
-export interface AesConfig {
-  name: string;
-  options: AesOptions;
-}
-
-export interface RsaOptions {
-  modulusLength?: number;
-  publicKeyEncodingType?: 'spki' | 'pkcs1';
-  privateKeyEncodingType?: 'pkcs8' | 'pkcs1' | 'sec1';
-  privateKeyCipher?: string;
-  privateKeyPassphrase?: string;
-}
-
-export interface RsaConfig {
-  name: string;
-  options: RsaOptions;
-}
-
-export interface PemInjectorOptions {
-  pemDir?: string;
-  aes?: AesConfig[];
-  rsa?: RsaConfig[];
-}
+// types
+import type { PemInjectorOptions } from './types';
 
 export default function PemInjector(options: PemInjectorOptions = {}): Plugin {
   const { pemDir = './pem', aes = [], rsa = [] } = options;

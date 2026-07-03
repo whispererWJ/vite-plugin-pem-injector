@@ -1,44 +1,51 @@
-# 开发文件
-.git/
-.github/
-.vscode/
-node_modules/
+# .npmignore
+
+# 源码（不需要在 npm 包中）
+src/
 tests/
 examples/
-coverage/
-src/
+
+# 配置文件
 tsconfig.json
 tsconfig.build.json
 vite.config.ts
+vitest.config.ts
 .eslintrc.json
 .prettierrc.json
 rollup.config.js
+.npmrc
 
-# 测试文件
-*.test.ts
-*.spec.ts
-*.test.js
-*.spec.js
+# 开发工具
+.git/
+.github/
+.vscode/
+.idea/
 
-# 配置文件
-*.config.js
-*.config.ts
-.env
-.env.local
-.env.*.local
+# 测试
+coverage/
+.nyc_output/
 
-# 日志文件
+# 日志
 *.log
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
+pnpm-debug.log*
 
-# 系统文件
+# 环境变量
+.env
+.env.*
+!.env.example
+
+# 密钥文件
+pem/
+*.pem
+
+# Git 文件
+.gitignore
+.gitattributes
+
+# 其他
+*.tgz
+*.tar.gz
 .DS_Store
 Thumbs.db
-*.swp
-*.swo
-
-# 构建缓存
-.eslintcache
-.nyc_output/

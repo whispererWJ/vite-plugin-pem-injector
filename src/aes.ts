@@ -1,26 +1,20 @@
 import crypto from 'crypto';
 import {
-  AesConfig,
-  AesPemContent,
-  EnvVars
-} from './types';
-import {
   ensureDirectoryExists,
   readPemFile,
   writePemFile,
   getEnvVarName,
   getFileName,
-  resolvePath
+  resolvePath,
 } from './utils';
+// types
+import type { AesConfig, AesPemContent, EnvVars } from './types';
 
-export function processAesKeys(
-  aesConfigs: AesConfig[],
-  pemDirPath: string
-): EnvVars {
+export function processAesKeys(aesConfigs: AesConfig[], pemDirPath: string): EnvVars {
   const envVars: EnvVars = {};
   ensureDirectoryExists(pemDirPath);
 
-  aesConfigs.forEach(config => {
+  aesConfigs.forEach((config) => {
     const { name, options } = config;
     const { keySize = 32, ivSize = 16 } = options;
     const filePath = resolvePath(pemDirPath, getFileName('aes', name));
@@ -29,7 +23,7 @@ export function processAesKeys(
     let iv: string;
 
     const existing = readPemFile<AesPemContent>(filePath);
-    
+
     if (existing && existing.key && existing.iv) {
       key = existing.key;
       iv = existing.iv;
