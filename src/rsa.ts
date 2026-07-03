@@ -8,7 +8,7 @@ import {
   resolvePath,
   fileExists,
 } from './utils';
-//  types
+// types
 import type { RsaConfig, EnvVars } from './types';
 
 /**
