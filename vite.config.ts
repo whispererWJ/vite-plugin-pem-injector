@@ -33,7 +33,9 @@ export default defineConfig({
     },
     sourcemap: true,
     minify: false,
-    target: 'node16'
+    target: 'node16',
+    outDir: 'dist',
+    emptyOutDir: true
   },
   plugins: [
     dts({
@@ -41,15 +43,8 @@ export default defineConfig({
       exclude: ['src/**/*.test.ts', 'src/**/*.spec.ts'],
       outDir: 'dist',
       rollupTypes: true,
-      insertTypesEntry: true
+      insertTypesEntry: true,
+      tsconfigPath: './tsconfig.json'
     })
-  ],
-  test: {
-    globals: true,
-    environment: 'node',
-    coverage: {
-      reporter: ['text', 'json', 'html'],
-      exclude: ['node_modules/', 'dist/', 'tests/']
-    }
-  }
+  ]
 });

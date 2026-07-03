@@ -47,7 +47,7 @@
   "author": {
     "name": "Whisperer",
     "email": "whisperer07@foxmail.com",
-    "url": "https://github.com/whisperer07"
+    "url": "https://github.com/whispererWJ"
   },
   "license": "MIT",
   "peerDependencies": {
@@ -71,12 +71,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yourusername/vite-plugin-pem-injector.git"
+    "url": "git+https://github.com/whispererWJ/vite-plugin-pem-injector.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/vite-plugin-pem-injector/issues"
+    "url": "https://github.com/whispererWJ/vite-plugin-pem-injector/issues"
   },
-  "homepage": "https://github.com/yourusername/vite-plugin-pem-injector#readme",
+  "homepage": "https://github.com/whispererWJ/vite-plugin-pem-injector#readme",
   "engines": {
     "node": ">=16.0.0"
   },
