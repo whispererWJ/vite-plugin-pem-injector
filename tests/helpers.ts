@@ -1,7 +1,7 @@
-// tests/helpers.ts
-import type { Plugin, UserConfig, ConfigEnv } from 'vite';
 import fs from 'fs';
 import path from 'path';
+// types
+import type { Plugin, UserConfig, ConfigEnv } from 'vite';
 
 /**
  * 执行插件的 config 钩子
@@ -12,17 +12,12 @@ export async function executeConfigHook(
   env: ConfigEnv = { command: 'build', mode: 'production' }
 ): Promise<any> {
   const configHook = plugin.config;
+  if (!configHook) return null;
 
-  if (!configHook) {
-    return null;
-  }
-
-  // 如果是函数形式
   if (typeof configHook === 'function') {
     return await configHook(config, env);
   }
 
-  // 如果是对象形式（包含 handler）
   if (typeof configHook === 'object' && 'handler' in configHook) {
     return await configHook.handler(config, env);
   }
@@ -31,58 +26,32 @@ export async function executeConfigHook(
 }
 
 /**
- * 执行插件的 configureServer 钩子
- */
-export function executeConfigureServer(plugin: Plugin, server: any = {}): void {
-  const configureServerHook = plugin.configureServer;
-
-  if (!configureServerHook) {
-    return;
-  }
-
-  // 如果是函数形式
-  if (typeof configureServerHook === 'function') {
-    configureServerHook(server);
-    return;
-  }
-
-  // 如果是对象形式（包含 handler）
-  if (typeof configureServerHook === 'object' && 'handler' in configureServerHook) {
-    configureServerHook.handler(server);
-    return;
-  }
-}
-
-/**
  * 从 config 钩子结果中提取 define 对象
  */
 export function getDefineFromConfig(result: any): Record<string, string> {
-  if (!result || typeof result !== 'object') {
-    return {};
-  }
-  return result.define || {};
+  return result?.define || {};
 }
 
 /**
- * 标准化换行符（处理 Windows/Linux/Mac 的换行符差异）
+ * 标准化换行符
  */
 export function normalizeNewlines(str: string): string {
-  return str.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  return str?.replace(/\r\n/g, '\n').replace(/\r/g, '\n') || '';
 }
 
 /**
- * 比较 PEM 内容（忽略换行符差异和首尾空格）
+ * 比较 PEM 内容
  */
 export function comparePemContent(expected: string, actual: string): boolean {
-  const normalizedExpected = normalizeNewlines(expected).trim();
-  const normalizedActual = normalizeNewlines(actual).trim();
-  return normalizedExpected === normalizedActual;
+  if (!expected || !actual) return false;
+  return normalizeNewlines(expected).trim() === normalizeNewlines(actual).trim();
 }
 
 /**
- * 解析环境变量值（处理 JSON.stringify）
+ * 解析环境变量值
  */
 export function parseEnvValue(value: string): any {
+  if (!value) return value;
   try {
     return JSON.parse(value);
   } catch {

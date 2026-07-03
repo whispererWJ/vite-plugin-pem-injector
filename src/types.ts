@@ -42,7 +42,7 @@ export interface RsaOptions {
   privateKeyCipher?: string;
   /** 私钥密码 */
   privateKeyPassphrase?: string;
-  /**
+  /** 
    * 是否隐藏私钥（不注入到环境变量）
    * - dev 模式默认: false (注入)
    * - build 模式默认: true (隐藏)
@@ -70,6 +70,8 @@ export interface PemInjectorOptions {
   aes?: AesConfig[];
   /** RSA密钥配置数组 */
   rsa?: RsaConfig[];
+  /** 是否静默模式（不输出日志），默认 false */
+  silent?: boolean;
 }
 
 /**
