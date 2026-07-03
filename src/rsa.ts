@@ -6,7 +6,7 @@ import {
   getEnvVarName,
   getFileName,
   resolvePath,
-  fileExists
+  fileExists,
 } from './utils';
 // types
 import type { RsaConfig, EnvVars } from './types';
@@ -23,7 +23,7 @@ export function processRsaKeys(
   const envVars: EnvVars = {};
   ensureDirectoryExists(pemDirPath);
 
-  rsaConfigs.forEach(config => {
+  rsaConfigs.forEach((config) => {
     const { name, options } = config;
     const {
       modulusLength = 2048,
@@ -31,7 +31,7 @@ export function processRsaKeys(
       privateKeyEncodingType = 'pkcs8',
       privateKeyCipher,
       privateKeyPassphrase,
-      privateKeyHidden = isBuild
+      privateKeyHidden = isBuild,
     } = options;
 
     const publicFilePath = resolvePath(pemDirPath, getFileName('rsa-public', name));
@@ -49,16 +49,18 @@ export function processRsaKeys(
         modulusLength,
         publicKeyEncoding: {
           type: publicKeyEncodingType,
-          format: 'pem'
+          format: 'pem',
         },
         privateKeyEncoding: {
           type: privateKeyEncodingType,
           format: 'pem',
-          ...(privateKeyCipher && privateKeyPassphrase ? {
-            cipher: privateKeyCipher,
-            passphrase: privateKeyPassphrase
-          } : {})
-        }
+          ...(privateKeyCipher && privateKeyPassphrase
+            ? {
+                cipher: privateKeyCipher,
+                passphrase: privateKeyPassphrase,
+              }
+            : {}),
+        },
       } as crypto.RSAKeyPairOptions<'pem', 'pem'>);
 
       publicKey = keyPair.publicKey;
@@ -74,9 +76,15 @@ export function processRsaKeys(
     // 根据 privateKeyHidden 决定是否注入私钥
     if (!privateKeyHidden) {
       envVars[getEnvVarName('VITE_RSA_PRIVATE_KEY', name, '')] = privateKey;
-      logCallback?.(`private-${name}`, `RSA private key for "${name}" is exposed (privateKeyHidden: false)`);
+      logCallback?.(
+        `private-${name}`,
+        `RSA private key for "${name}" is exposed (privateKeyHidden: false)`
+      );
     } else {
-      logCallback?.(`private-${name}`, `RSA private key for "${name}" is hidden (privateKeyHidden: true)`);
+      logCallback?.(
+        `private-${name}`,
+        `RSA private key for "${name}" is hidden (privateKeyHidden: true)`
+      );
     }
   });
 

@@ -9,12 +9,7 @@ import type { PemInjectorOptions, EnvVars } from './types';
  * Vite插件：注入PEM文件到环境变量
  */
 export default function PemInjector(options: PemInjectorOptions = {}): Plugin {
-  const {
-    pemDir = './pem',
-    aes = [],
-    rsa = [],
-    silent = false
-  } = options;
+  const { pemDir = './pem', aes = [], rsa = [], silent = false } = options;
 
   // 日志去重
   const logCache = new Set<string>();
@@ -54,13 +49,19 @@ export default function PemInjector(options: PemInjectorOptions = {}): Plugin {
         const isBuild = env.command === 'build';
         const envVars = processKeys(isBuild);
 
-        logOnce('mode', `📦 [vite-plugin-pem-injector] Running in ${isBuild ? 'build' : 'dev'} mode`);
+        logOnce(
+          'mode',
+          `📦 [vite-plugin-pem-injector] Running in ${isBuild ? 'build' : 'dev'} mode`
+        );
 
         return {
-          define: Object.keys(envVars).reduce((acc, key) => {
-            acc[`import.meta.env.${key}`] = JSON.stringify(envVars[key]);
-            return acc;
-          }, {} as Record<string, string>)
+          define: Object.keys(envVars).reduce(
+            (acc, key) => {
+              acc[`import.meta.env.${key}`] = JSON.stringify(envVars[key]);
+              return acc;
+            },
+            {} as Record<string, string>
+          ),
         };
       } catch (error) {
         if (!silent) {
@@ -81,7 +82,7 @@ export default function PemInjector(options: PemInjectorOptions = {}): Plugin {
           console.error('[vite-plugin-pem-injector] Failed to inject env vars:', error);
         }
       }
-    }
+    },
   };
 }
 

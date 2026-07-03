@@ -5,7 +5,7 @@ import {
   writePemFile,
   getEnvVarName,
   getFileName,
-  resolvePath
+  resolvePath,
 } from './utils';
 // types
 import type { AesConfig, AesPemContent, EnvVars } from './types';
@@ -21,7 +21,7 @@ export function processAesKeys(
   const envVars: EnvVars = {};
   ensureDirectoryExists(pemDirPath);
 
-  aesConfigs.forEach(config => {
+  aesConfigs.forEach((config) => {
     const { name, options } = config;
     const { keySize = 32, ivSize = 16 } = options;
 
@@ -31,7 +31,7 @@ export function processAesKeys(
     let iv: string;
 
     const existing = readPemFile<AesPemContent>(filePath);
-    
+
     if (existing?.key && existing?.iv) {
       key = existing.key;
       iv = existing.iv;
