@@ -42,7 +42,7 @@ export interface RsaOptions {
   privateKeyCipher?: string;
   /** 私钥密码 */
   privateKeyPassphrase?: string;
-  /** 
+  /**
    * 是否隐藏私钥（不注入到环境变量）
    * - dev 模式默认: false (注入)
    * - build 模式默认: true (隐藏)
