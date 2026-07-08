@@ -1,8 +1,8 @@
-# @whisperer/vite-plugin-pem-injector
+# @whisperer07/vite-plugin-pem-injector
 
 > Vite 插件 - 自动生成或读取 PEM 密钥文件，并注入到环境变量中
 
-[![npm version](https://badge.fury.io/js/@whisperer%2Fvite-plugin-pem-injector.svg)](https://badge.fury.io/js/@whisperer%2Fvite-plugin-pem-injector)
+[![npm version](https://badge.fury.io/js/@whisperer07%2Fvite-plugin-pem-injector.svg)](https://www.npmjs.com/package/@whisperer07/vite-plugin-pem-injector?activeTab=versions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Vite](https://img.shields.io/badge/Vite-^3.0.0%20%7C%7C%20^4.0.0%20%7C%7C%20^5.0.0-blueviolet)](https://vitejs.dev/)
 
@@ -24,11 +24,11 @@
 ## 🔧 安装
 
 ```bash
-npm install @whisperer/vite-plugin-pem-injector
+npm install @whisperer07/vite-plugin-pem-injector
 # 或
-yarn add @whisperer/vite-plugin-pem-injector
+yarn add @whisperer07/vite-plugin-pem-injector
 # 或
-pnpm add @whisperer/vite-plugin-pem-injector
+pnpm add @whisperer07/vite-plugin-pem-injector
 ```
 
 ## 🚀 快速开始
@@ -38,7 +38,7 @@ pnpm add @whisperer/vite-plugin-pem-injector
 ```typescript
 // vite.config.ts
 import { defineConfig } from 'vite';
-import PemInjector from '@whisperer/vite-plugin-pem-injector';
+import PemInjector from '@whisperer07/vite-plugin-pem-injector';
 
 export default defineConfig({
   plugins: [
@@ -129,7 +129,7 @@ const rsaPrivateKey = import.meta.env.VITE_RSA_PRIVATE_KEY_MAIN;
 
 ```typescript
 // vite.config.ts
-import PemInjector from '@whisperer/vite-plugin-pem-injector';
+import PemInjector from '@whisperer07/vite-plugin-pem-injector';
 
 export default {
   plugins: [
@@ -159,7 +159,7 @@ const iv = import.meta.env.VITE_AES_IV_ENCRYPTION;
 
 ```typescript
 // vite.config.ts
-import PemInjector from '@whisperer/vite-plugin-pem-injector';
+import PemInjector from '@whisperer07/vite-plugin-pem-injector';
 
 export default {
   plugins: [
